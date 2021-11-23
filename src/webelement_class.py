@@ -13,13 +13,9 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 filepath = '../screenshots/'
 
-# STEPS
-# 1. open the browser
-driver = webdriver.Chrome()
-driver.implicitly_wait(20)  # synchronizing the browser
-driver.maximize_window()
 
-def click_element_by_locator(locator, method='xpath', wait_time=10):
+
+def click_element_by_locator(driver, locator, method='xpath', wait_time=10):
     """click with explicit wait"""
     try:
         wdwait = WebDriverWait(driver, wait_time)
@@ -37,7 +33,7 @@ def click_element_by_locator(locator, method='xpath', wait_time=10):
         print(err)
 
 
-def tes_go_to_authentication_page():
+def tes_go_to_authentication_page(driver):
     # 2. open the http://automationpractice.com/index.php demo website
     driver.get("http://automationpractice.com/index.php")
     # click on sign in
@@ -50,7 +46,7 @@ def tes_go_to_authentication_page():
     sleep(3)
 
 
-def tes_create_account(email):
+def tes_create_account(driver, email):
     """
         Creating the account with email and static data for the sign up info
         This step is dependent on test_go_to_authentication_page()
@@ -118,23 +114,7 @@ def tes_create_account(email):
     print("address_msg displayed: ", address_msg)
     driver.save_screenshot(filepath + 'signup2.png')
 
-
-def tes_explicit_wait():
-    # open the website
-    host = "https://chercher.tech/practice/explicit-wait-sample-selenium-webdriver"
-    driver.get(host)
-    print("########### Testing Populate text #############")
-    click_element_by_locator('populate-text', 'id')
-    wdwait = WebDriverWait(driver, 15)
-    wdwait.until(EC.text_to_be_present_in_element((By.ID, 'h2'), 'Selenium'))
-    element = wdwait.until(EC.presence_of_element_located((By.ID, 'h2')))
-    print("Text in the element", element.text)
-
-    click_element_by_locator("display-other-button")
-    button_text = wdwait.until(EC.visibility_of_element_located((By.ID, 'hidden'))).text
-    print("Text inside the button", button_text)
-
-    # Drop down Select State
+# Drop down Select State
     # verify state is selected
     # html DOM - document object model
     # driver.execute_script('arguments[0].click();', driver.find_element(By.ID, 'someid')
@@ -156,23 +136,25 @@ def tes_explicit_wait():
     # ...
     # click on Register
 
-def tes_explicit_wait():
+
+def tes_explicit_wait(driver):
     # open the website
     host = "https://chercher.tech/practice/explicit-wait-sample-selenium-webdriver"
     driver.get(host)
-    print("########## Testing Populate text #############")
+    print("########### Testing Populate text #############")
     click_element_by_locator('populate-text', 'id')
     wdwait = WebDriverWait(driver, 15)
     wdwait.until(EC.text_to_be_present_in_element((By.ID, 'h2'), 'Selenium'))
     element = wdwait.until(EC.presence_of_element_located((By.ID, 'h2')))
-    print('Text in the element:', element.text)
+    print("Text in the element", element.text)
 
     print("########## Testing Visibility of element #############")
-    click_element_by_locator('display-other-button', 'id')
+    click_element_by_locator("display-other-button")
     button_text = wdwait.until(EC.visibility_of_element_located((By.ID, 'hidden'))).text
-    print('Text inside the button: ', button_text)
+    print("Text inside the button", button_text)
 
-def tes_drag_drop():
+
+def tes_drag_drop(driver):
     print("######### Testing Drag and drop ")
     driver.get("https://jqueryui.com/droppable/")
     wdwait = WebDriverWait(driver, 20)
@@ -184,7 +166,8 @@ def tes_drag_drop():
     actions.drag_and_drop(source_element, target_element).perform()
     print(f"text in the box after drag and drop: '{target_element.text}'")
 
-def tes_mouse_hover_over():
+
+def tes_mouse_hover_over(driver):
     wdwait = WebDriverWait(driver, 20)
 
     driver.get("http://automationpractice.com/index.php")
